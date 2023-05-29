@@ -25,6 +25,14 @@ export default function Home() {
     setFile(acceptedFiles[0]);
   };
 
+  const fileSize = (size: number) => {
+    if (size === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+    const i = Math.floor(Math.log(size) / Math.log(k));
+    return parseFloat((size / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
   return (
     <div className="max-w-3xl mx-auto my-10 px-4">
       {/* Header Section */}
@@ -59,18 +67,36 @@ export default function Home() {
             )}
           </Dropzone>
         </div>
-        { error && (
-            <div className="flex justify-center">
-              <p className="text-md text-yellow-500">{error}</p>
+        {error && (
+          <div className="flex justify-center">
+            <p className="text-md text-yellow-500">{error}</p>
+          </div>
+        )}
+        {/* Submit button */}
+        {file && (
+          <div className="flex items-center justify-center mt-2">
+            <button className="text-white text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l rounded-lg px-4 py-2 text-center mb-2">
+              Remove background
+            </button>
+          </div>
+        )}
+      </section>
+      {/* Images Section */}
+      <section className="grid grid-cols-2 gap-4 mt-4">
+        {file && (
+          <>
+            <div className="relative">
+              <img
+                src={URL.createObjectURL(file)}
+                alt={file.name}
+                className="object-cover w-full h-full"
+              />
             </div>
-          )}
-        {/* Submit button */ }
-        { file && (
-        <div className="flex items-center justify-center mt-2">
-          <button className="text-white text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l rounded-lg px-4 py-2 text-center mb-2">
-            Remove background
-          </button>
-        </div>
+            <div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-50 text-white text-md p-2">
+              {file.name}({fileSize(file.size)})
+            </div>
+            <div className="flex items-center justify-center">Output image here</div>
+          </>
         )}
       </section>
     </div>
