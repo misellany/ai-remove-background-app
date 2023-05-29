@@ -40,6 +40,7 @@ export default function Home() {
           /* Dropzone */
         }
         <div className="w-full text-center border-4 border-gray-500 border-dashed rounded-md cursor-pointer mb-2 text-gray-500">
+
           <Dropzone
             onDrop={(acceptedFiles) => console.log(acceptedFiles)}
             accept={acceptedFileTypes}
@@ -57,16 +58,20 @@ export default function Home() {
               </section>
             )}
           </Dropzone>
-        </div>;
-
-        {
-          /* Submit button */
-        }
+        </div>
+        { error && (
+            <div className="flex justify-center">
+              <p className="text-md text-yellow-500">{error}</p>
+            </div>
+          )}
+        {/* Submit button */ }
+        { file && (
         <div className="flex items-center justify-center mt-2">
           <button className="text-white text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l rounded-lg px-4 py-2 text-center mb-2">
             Remove background
           </button>
-        </div>;
+        </div>
+        )}
       </section>
     </div>
   );
