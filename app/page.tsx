@@ -78,7 +78,8 @@ export default function Home() {
   const handleDownload = () => {
     saveAs(outputImage as string, "output.png");
   };
-  
+
+
   return (
     <div className="max-w-3xl mx-auto my-10 px-4">
       {/* Header Section */}
@@ -149,9 +150,10 @@ export default function Home() {
                 <FaTrashAlt className="w-4 h-4 hover:scale-125 duration-300" />
               </button>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center relative">
               {
                 loading && (
+                  
                   <ThreeDots
                     height="60"
                     width="60"
@@ -159,13 +161,23 @@ export default function Home() {
                     ariaLabel="three-dots-loading"
                     visible={true}
                   />
-                )
-              }              {outputImage && (
+                )}
+              
+              {outputImage && (
+                <>
                 <img
                   src={outputImage}
                   alt="output"
                   className="object-cover w-full h-full"
                 />
+                <button
+                className="absolute top-0 right-0 p-3 text-black bg-yellow-500"
+                onClick={() => handleDownload()}
+                >
+                 <FaDownload className="w-6 h-6 hover:scale-125 duration-300" />
+            </button>
+          </>
+
               )}
             </div>
             <div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-50 text-white text-md p-2">
