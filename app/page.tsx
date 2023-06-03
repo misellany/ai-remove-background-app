@@ -2,13 +2,16 @@
 import { useState } from "react";
 import Dropzone, { FileRejection } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
+import { ThreeDots } from "react-loader-spinner";
+
 
 export default function Home() {
   const [file, setFile] = useState<File | null>();
   const [error, setError] = useState("");
 
   const [outputImage, setOutputImage] = useState<string | null>(null);
-
+  const [base64image, setBase64Image] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const acceptedFileTypes = {
     "image/jpeg": [".jpeg", ".png"],
   };
@@ -23,10 +26,18 @@ export default function Home() {
       return;
     }
     handleDelete();
-    
+
     console.log(acceptedFiles);
     setError("");
     setFile(acceptedFiles[0]);
+
+    // convert file to base64
+    const reader = new FileReader();
+    reader.readAsDataURL(acceptedFiles[0]);
+    reader.onload = () => {
+      const binaryStr = reader.result as string;
+      setBase64Image(binaryStr);
+    };
   };
 
   const fileSize = (size: number) => {
@@ -43,13 +54,24 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    // We're going to process the input image
-    // and generate the output image later here.
+    setLoading(true); const response = await fetch("/api/replicate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: base64image }),
+    });
 
-    // For now, let's assume that we have
-    // an output image from https://via.placeholder.com/150
+    let result = await response.json();
+    console.log(result);
 
-    setOutputImage("https://via.placeholder.com/150");
+    if (result.error) {
+      setError(result.error);
+      setLoading(false); return;
+    }
+
+    setOutputImage(result.output);
+    setLoading(false);
   };
 
   return (
@@ -119,7 +141,17 @@ export default function Home() {
               </button>
             </div>
             <div className="flex items-center justify-center">
-              {outputImage && (
+              {
+                loading && (
+                  <ThreeDots
+                    height="60"
+                    width="60"
+                    color="#eeeeee"
+                    ariaLabel="three-dots-loading"
+                    visible={true}
+                  />
+               )
+}              {outputImage && (
                 <img
                   src={outputImage}
                   alt="output"
