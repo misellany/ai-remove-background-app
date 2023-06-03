@@ -116,8 +116,12 @@ export default function Home() {
         {/* Submit button */}
         {file && (
           <div className="flex items-center justify-center mt-2">
-            <button onClick={handleSubmit}
-              className="text-white text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l rounded-lg px-4 py-2 text-center mb-2">
+            <button 
+              onClick={handleSubmit} 
+              disabled={loading} 
+              className={`text-white text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l rounded-lg px-4 py-2 text-center mb-2" ${
+                loading && "cursor-progress"
+              }`} >
               Remove background
             </button>
           </div>
@@ -150,8 +154,8 @@ export default function Home() {
                     ariaLabel="three-dots-loading"
                     visible={true}
                   />
-               )
-}              {outputImage && (
+                )
+              }              {outputImage && (
                 <img
                   src={outputImage}
                   alt="output"
