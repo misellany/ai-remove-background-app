@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
 import Dropzone, { FileRejection } from "react-dropzone";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaDownload } from "react-icons/fa";
 import { ThreeDots } from "react-loader-spinner";
+import { saveAs } from "file-saver";
 
 
 export default function Home() {
@@ -74,6 +75,10 @@ export default function Home() {
     setLoading(false);
   };
 
+  const handleDownload = () => {
+    saveAs(outputImage as string, "output.png");
+  };
+  
   return (
     <div className="max-w-3xl mx-auto my-10 px-4">
       {/* Header Section */}
