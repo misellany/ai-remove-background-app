@@ -55,28 +55,38 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    setLoading(true); const response = await fetch("/api/replicate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ image: base64image }),
-    });
-
-    let result = await response.json();
-    console.log(result);
-
-    if (result.error) {
-      setError(result.error);
-      setLoading(false); return;
+    setLoading(true);
+    setError(""); // Clear any previous errors
+  
+    try {
+      const response = await fetch("/api/replicate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: base64image }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'An error occurred');
+      }
+  
+      const result = await response.json();
+      console.log(result);
+  
+      if (result.error) {
+        setError(result.error);
+        return;
+      }
+  
+      setOutputImage(result.output);
+    } catch (error) {
+      console.error('Error:', error);
+      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
     }
-
-    setOutputImage(result.output);
-    setLoading(false);
-  };
-
-  const handleDownload = () => {
-    saveAs(outputImage as string, "output.png");
   };
 
 
