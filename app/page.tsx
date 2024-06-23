@@ -97,7 +97,6 @@ export default function Home() {
         <div className="w-full text-center border-4 border-gray-500 border-dashed rounded-md cursor-pointer mb-2 text-gray-500">
 
           <Dropzone
-            onDrop={(acceptedFiles) => console.log(acceptedFiles)}
             accept={acceptedFileTypes}
             multiple={false}
             maxSize={maxFileSize}
