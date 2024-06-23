@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
   // 3. Set the model that we're about to run
   const model =
-    "cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5c003";
+    "cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5ci";
 
   // 4. Set the input image which is the image we uploaded from the client
   const input = {
