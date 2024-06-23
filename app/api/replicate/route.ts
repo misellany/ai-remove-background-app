@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Replicate from "replicate";
 
 export async function POST(request: Request) {
+  return NextResponse.json({ message: "Test response" }, { status: 200 });
   try {
     const req = await request.json();
     const replicate = new Replicate({
